@@ -1,0 +1,120 @@
+﻿@model PoliceAdmin.Models.RC
+
+@{
+    ViewBag.Title = "Details";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Details</h2>
+
+<div>
+    <h4>RC</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+     
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpiryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vehicletype)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vehicletype)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VehicleDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VehicleDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChasisNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChasisNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EngineNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EngineNo)
+        </dd>
+
+     
+       
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.VehicleNo }) |@Html.ActionLink("Delete", "Delete", new { id = Model.VehicleNo })|
+    @Html.ActionLink("Back to List", "Index")
+</p>

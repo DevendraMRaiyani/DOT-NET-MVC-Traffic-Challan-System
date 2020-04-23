@@ -1,0 +1,134 @@
+﻿@model IEnumerable<PoliceAdmin.Models.TraficPolice>
+
+@{
+    ViewBag.Title = "Search";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Search</h2>
+
+
+    @if (ViewBag.State != null)
+    {
+        using (Html.BeginForm(null, null, FormMethod.Post))
+        {
+            <div class="col-md-10">
+                @{
+                             ViewBag.state = ViewBag.State;
+                }
+                Select the State:
+                @Html.DropDownList("state", null, htmlAttributes: new { @class = "form-control" })<br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Search" class="btn btn-default" />
+                </div>
+            </div>
+          }
+    }
+</div>
+    <div>
+        <h4>TraficPolice List</h4>
+        <hr />
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TP_ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tp_password)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.image_url)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tp_fname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tp_lname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tp_email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tp_posting)
+                </th>
+                <th></th>
+            </tr>
+
+            @if (Model == null)
+            {
+                <h1>No data found</h1>
+            }
+            else
+            {
+
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayFor(model => item.TP_ID)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tp_password)
+                    </td>
+                    <td>
+
+                        <img src="~/Content/PolicememberProfilePhoto/@item.image_url" width="100px" height="100px" />
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tp_fname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tp_lname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tp_email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tp_posting)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TP_ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.TP_ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TP_ID })
+                    </td>
+                </tr>
+            }
+            }
+        </table>
+       
+    </div>
+    <p>
+        
+        @Html.ActionLink("Back to List", "Index")
+    </p>

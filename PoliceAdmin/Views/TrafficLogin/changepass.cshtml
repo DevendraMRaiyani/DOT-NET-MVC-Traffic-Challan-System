@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "changepass";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("E-parivahan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+
+                    
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Trafic Police Change Password</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <b class="text-danger">@ViewBag.msg</b>
+
+    <table>
+
+        <tr>
+            <td class="col-md-2">Password:</td>
+            <td>
+                <input class="form-control" type="password" name="password" required />
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2"><br />Conform Password:</td>
+            <td>
+                <br />
+                <input class="form-control" type="password" name="repassword" required />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <br />
+                <button class="btn btn-primary" type="submit">Change Password</button>
+            </td>
+        </tr>
+    </table>
+}

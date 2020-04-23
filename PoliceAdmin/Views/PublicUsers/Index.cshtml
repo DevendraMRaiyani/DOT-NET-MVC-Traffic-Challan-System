@@ -1,0 +1,83 @@
+﻿@model IEnumerable<PoliceAdmin.Models.PublicUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConfPassword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AadharNo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConfPassword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AadharNo)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PublicUserId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PublicUserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PublicUserId })
+        </td>
+    </tr>
+}
+
+</table>

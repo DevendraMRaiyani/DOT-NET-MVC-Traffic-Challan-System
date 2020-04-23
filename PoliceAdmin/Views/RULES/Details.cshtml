@@ -1,0 +1,60 @@
+﻿@model PoliceAdmin.Models.RULES
+
+@{
+    ViewBag.Title = "Details";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Details</h2>
+
+<div>
+    <h4>RULES</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Rule)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rule)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fine)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fine)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RuleId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

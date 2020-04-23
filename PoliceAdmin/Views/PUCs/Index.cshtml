@@ -1,0 +1,110 @@
+﻿@model IEnumerable<PoliceAdmin.Models.PUC>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Index</h2>
+
+<p>Total PUC issued:@ViewBag.totalPUC<br />
+    @Html.ActionLink("Create New", "Create", null,new { @class = "btn btn-default" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model=>model.PUCNo )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rc.FirstOrDefault().OwnerName )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.rc.FirstOrDefault().VehicleNo )
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IssueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HC)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(model=>item.PUCNo )
+        </td>
+        <td>
+            @Html.DisplayFor(model => item.rc.FirstOrDefault().OwnerName)
+        </td>
+        <th>
+            @Html.DisplayFor(model => item.rc.FirstOrDefault().VehicleNo)
+        </th>
+        <td>
+            @{
+                if (DateTime.Compare(DateTime.Now, item.IssueDate ) > 0 && DateTime.Compare(DateTime.Now, item.ExpiryDate) < 0)
+                {
+                    <p style="color:green;font-weight: bold;font-size: 15px;">Active</p>
+                }
+                else
+                {
+                    <p style="color:red;font-weight: bold;font-size: 15px;">Not Active</p>
+                }
+            }
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.IssueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpiryDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HC)
+        </td>
+        <td>
+           
+            @Html.ActionLink("Delete", "Delete", new { id=item.PUCNo }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

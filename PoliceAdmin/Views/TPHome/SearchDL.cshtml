@@ -1,0 +1,210 @@
+﻿@using PoliceAdmin.Models
+@model IEnumerable<PoliceAdmin.Models.DL>
+@{
+    ViewBag.Title = "SearchDL";
+    string DOC = ViewBag.Document;
+    ICollection<DL> dls = ViewBag.dls;
+}
+@{
+    if (Request.Cookies.Get("tAdmin") != null)
+    {
+
+        string t = Request.Cookies.Get("tAdmin").Value;
+        if (t == "Yes")
+        {
+            @section nav{
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+
+                                <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                                <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                                <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                                <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                                <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                                <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+
+    }
+    else
+    {
+        @section nav{
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+
+
+                            <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+}
+
+
+
+<h2>SearchDL</h2>
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        margin: 15pxpx;
+        display: inline-block;
+        text-align: center;
+        font-family: arial;
+        padding: 15px;
+    }
+
+    .title {
+        color: grey;
+        font-size: 18px;
+    }
+
+    button {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        color: black;
+        background-color: black;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+    }
+
+  
+
+    img {
+        max-width: 300px;
+        max-height: 300px;
+    }
+
+    button:hover, a:hover {
+        opacity: 0.7;
+    }
+
+    p {
+        margin: 15px;
+    }
+
+    .link > a {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        background-color: black;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+        color: white;
+    }
+</style>
+
+<div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <table>
+            <tr class="row">
+                <td class="col-md-3">
+                    Enter
+                    Aadhar No:
+                   
+                </td>
+                <td class="col-md-3">
+                   
+                        <input class="form-control" type="text" name="number" placeholder="e.g.: 801080143181" pattern="[0-9]{12}" />
+                   
+                   
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </td>
+            </tr>
+        </table>
+
+
+    }
+   
+</div>
+<div style="display:grid">
+    @if (DOC.Equals("DL"))
+    {
+
+        <p style="font-size : 20px">Search Result,</p>
+        
+            foreach (var item in dls)
+            {
+                <div class="card col-sm-6">
+                    <div class="col-sm-4 " style="float:left">
+                        <img src="~/Content/DrivingLicence/@item.profilepic" alt="John" height="150px" width="100%  ">
+                    </div>
+                    <div class="col-sm-8" style="float:left ;text-align:justify">
+                        <h1>@Html.DisplayFor(modelItem => item.LicenceNo)</h1>
+                        <p class="title">@Html.DisplayFor(modelItem => item.OwnerName)</p>
+
+                        @{
+                            if (DateTime.Compare(DateTime.Now, item.IssueDate) > 0 && DateTime.Compare(DateTime.Now, item.ExpiryDate) < 0)
+                            {
+                                <p style="color:green;font-weight: bold;font-size: 20px;">Active</p>
+                            }
+                            else
+                            {
+                                <p style="color:red;font-weight: bold;font-size: 20px;">Not Active</p>
+                            }
+                        }
+
+
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.IssueDate)   -@Html.DisplayFor(modelItem => item.IssueDate)
+                        </p>
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.ExpiryDate)   -@Html.DisplayFor(modelItem => item.ExpiryDate)
+                        </p>
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.Vehicletype)   -@Html.DisplayFor(modelItem => item.Vehicletype)
+                        </p>
+
+                      
+                    </div>
+                    <p class="link">@Html.ActionLink("Details", "DLDetails", new { id = item.LicenceNo })</p>
+                </div>
+                                    }
+
+         
+
+       }
+  <br />
+</div>

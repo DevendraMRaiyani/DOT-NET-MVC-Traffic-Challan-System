@@ -1,0 +1,587 @@
+﻿@model PoliceAdmin.Models.Challan
+@using PoliceAdmin.Models
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("E-Parivahan", "Index", "PUHome", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Home", "Index", "PUHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+
+                    <li style="float:right">@Html.ActionLink("Log Out", "Logout", "PULogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+@{
+        PublicUser pu = ViewBag.pu;
+       Universal db = new Universal();
+    ICollection<DL> dls = ViewBag.dls;
+    List<PoliceAdmin.Models.Challan> dlc = null;<!---ViewBag.dlc;-->
+
+    ICollection<RC> rcs = ViewBag.rcs;
+    List<PoliceAdmin.Models.Challan> rcc = null ; <!--ViewBag.rcc; -->
+    ICollection<PUC> pucs = ViewBag.pucs;
+
+
+
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style>
+    #ch {
+        border-left: 6px solid #33bbff;
+        background-color: #e6f7ff;
+        padding: 12px;
+        border-radius: 5px;
+    }
+
+    #c {
+        border-radius: 5px;
+        border: 1px solid gray;
+    }
+
+    #lb {
+        color: gray;
+        font-size: 14px;
+    }
+   .RMV{
+      padding:7px;
+	color: white;
+	background-color: #ed9c28;
+	border-color: #d58512;
+    border-radius:5px;
+   }
+   .RMV > a{
+       color:white;
+   }
+   .AddV > a{
+       color:white;
+   }
+   .AddV{
+       padding:7px;
+       color: #white;
+	background-color: green;
+	border-color: green;
+    border-radius:5px;
+   }
+</style>
+<h2>Welcome,@pu.UserName</h2>
+<br />
+
+
+<div class="container">
+    <p style="font-size : 20px">Your Virtual Documents,</p>
+    <div id="accordion">
+        <div class="card" id="c" style="margin-bottom:5px;">
+            @if (dls != null)
+            {
+                int i=1;
+
+                foreach (var item in dls )
+                {
+                    string idhref = "#collapsOne" + i;
+                    string id = "collapsOne" + i;
+
+                    <a class="card-link" style="text-decoration:none" data-toggle="collapse" href=@idhref>
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        DL
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.LicenceNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.OwnerName
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id=@id class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">DL Holder Name:</td>
+                                    <td class="col-md-3"><b>@item.OwnerName</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3" rowspan="4">
+                                        <div style="width:100px;height:100px;background-color:gray;border-radius:5px">
+                                            
+                                            <img src="~/Content/DrivingLicence/@item.profilepic" height="100px" width="100px" />
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Licence No.:</td>
+                                    <td class="col-md-3"><b>@item.LicenceNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle Class:</td>
+                                    <td class="col-md-3"><b>@item.Vehicletype</b></td>
+                                    <td class="col-md-3" id="lb">RTO office:</td>
+                                    <td class="col-md-3"><b>@item.RTO</b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle Description:</td>
+                                    <td class="col-md-9"><b>@item.VehicleDescription </b></td>
+                                   
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Issue Date:</td>
+                                    <td class="col-md-3"><b>@item.IssueDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Expiry Date:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                    <td>
+                                        <div class="RMV">@Html.ActionLink("Remove", "Remove", new { id = 1, number = item.LicenceNo })</div>
+                                    </td>
+                                    <td>
+                                        <div class="AddV"><a href="/PUHome/Add/1">  Add Onther Virtual DL</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                           @{
+                             
+
+                               dlc = db.Challans.Where(c => c.LicenceNo == item.LicenceNo).ToList();
+                               ViewBag.dlc = dlc;
+                               } 
+                            <p style="font-size : 20px;margin-left:50px">Issued Challans,</p>
+                            @if (dlc.Count == 0)
+                            {
+                                <i style="margin-left:60px" id="lb">No challans are issued</i>
+                            }
+                            else
+                            {
+                                foreach (var x in dlc)
+                                {
+                                    <table style="margin-left:60px;line-height:2">
+                                        <tr class="row">
+                                            <td class="col-md-3" id="lb">
+                                                Challan No.:
+                                            </td>
+                                            <td class="col-md-3">
+                                                <b>@Html.DisplayFor(y => x.ChallanNo)</b>
+                                            </td>
+                                            <td class="col-md-3" id="lb">
+                                                Issue Date:
+                                            </td>
+                                            <td class="col-md-3">
+                                                <b>@Html.DisplayFor(y => x.IssueDate)</b>
+                                            </td>
+                                        </tr>
+                                        <tr class="row">
+                                            <td class="col-md-3" id="lb">Reasons To Issue:</td>
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3"></td>
+                                        </tr>
+                                        @{ int ict = 1; }
+                                        @foreach (RULES r in x.rules)
+                                        {
+                                            <tr class="raw">
+
+                                                <td class="col-md-3"></td>
+                                                <td class="col-md-3 " style="text-align:right"><b style="font-size:larger">@ict)</b></td>
+                                                <td class="col-md-3">
+                                                    <b>@r.Rule </b>
+
+                                                </td>
+                                                <td class="col-md-3">@r.Fine</td>
+                                                <td class="col-md-3"></td>
+                                            </tr>
+                                            { ict++; }
+                                        }
+
+
+                                        <tr class="row">
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3" id="lb">Total Fine:</td>
+                                            <td class="col-md-3">
+                                                <b> @x.totalFine Rs.</b>
+                                            </td>
+                                            @if (x.Paid == true)
+                                            {
+                                                <td class="col-md-3" style="color:green">
+                                                    <b>Paid</b>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="col-md-3" style="color:red">
+                                                    <b>Un Paid</b>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </table>
+                                    <hr>
+                                                }
+                                            }
+
+                        </div>
+                    </div>
+                    i += 1;
+                }
+
+            }
+            else
+            {
+                <div class="card-header" id="ch">
+                    <table>
+                        <tr class="row">
+                            <td class="col-md-1" style="color:black">
+                                DL
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb">No Virtual DL is added</i>
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb"><a href="/PUHome/Add/1">Click Here</a> to add Virtual DL</i>
+                            </td>
+                            <td class="col-md-2"></td>
+                            <td class="col-md-5"></td>
+                            <td class="col-md-1"></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div class="card" id="c" style="margin-bottom:5px;">
+            @if (rcs != null)
+            {
+                int i = 1;
+                foreach (var item in rcs)
+                {
+                    string idhref = "#collapsTwo" + i;
+                    string id = "collapsTwo" + i;
+                    <a class="collapsed card-link" style="text-decoration:none" data-toggle="collapse" href=@idhref>
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        RC
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.VehicleNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.OwnerName
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id=@id class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Owner Name:</td>
+                                    <td class="col-md-3"><b>@item.OwnerName</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Reg. No.:</td>
+                                    <td class="col-md-3"><b>@item.VehicleNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle Class:</td>
+                                    <td class="col-md-3"><b>@item.Vehicletype</b></td>
+                                    <td class="col-md-3" id="lb">Vehicle Details:</td>
+                                    <td class="col-md-3"><b>@item.VehicleDescription</b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Reg. Date:</td>
+                                    <td class="col-md-3"><b>@item.RegDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Reg. Validity:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                    <td>
+                                        <div class="RMV">@Html.ActionLink("Remove", "Remove", new { id = 2, number = item.VehicleNo })</div>
+                                    </td>
+                                    <td>
+                                        <div class="AddV"><a href="/PUHome/Add/2">  Add Onther Virtual DL</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                            @{
+
+
+                                rcc = db.Challans.Where(c => c.RCNo == item.VehicleNo).ToList();
+                                ViewBag.dlc = dlc;
+                            }
+                            <p style="font-size : 20px;margin-left:50px">Issued Challans,</p>
+                            @if (rcc.Count == 0)
+                            {
+                                <i style="margin-left:60px" id="lb">No challans are issued</i>
+                            }
+                           else
+                            {
+                                foreach (var x in rcc)
+                                {
+                                    <table style="margin-left:60px;line-height:2">
+                                        <tr class="row">
+                                            <td class="col-md-3" id="lb">
+                                                Challan No.:
+                                            </td>
+                                            <td class="col-md-3">
+                                                <b>@Html.DisplayFor(y => x.ChallanNo)</b>
+                                            </td>
+                                            <td class="col-md-3" id="lb">
+                                                Issue Date:
+                                            </td>
+                                            <td class="col-md-3">
+                                                <b>@Html.DisplayFor(y => x.IssueDate)</b>
+                                            </td>
+                                        </tr>
+                                        <tr class="row">
+                                            <td class="col-md-3" id="lb">Reasons To Issue:</td>
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3"></td>
+                                        </tr>
+                                        @{ int ict = 1; }
+                                        @foreach (RULES r in x.rules)
+                                        {
+                                            <tr class="raw">
+
+                                                <td class="col-md-3"></td>
+                                                <td class="col-md-3 " style="text-align:right"><b style="font-size:larger">@ict)</b></td>
+                                                <td class="col-md-3">
+                                                    <b>@r.Rule </b>
+
+                                                </td>
+                                                <td class="col-md-3">@r.Fine</td>
+                                                <td class="col-md-3"></td>
+                                            </tr>
+                                            { ict++; }
+                                        }
+
+
+                                        <tr class="row">
+                                            <td class="col-md-3"></td>
+                                            <td class="col-md-3" id="lb">Total Fine:</td>
+                                            <td class="col-md-3">
+                                                <b> @x.totalFine Rs.</b>
+                                            </td>
+                                            @if (x.Paid == true)
+                                            {
+                                                <td class="col-md-3" style="color:green">
+                                                    <b>Paid</b>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="col-md-3" style="color:red">
+                                                    <b>Un Paid</b>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </table>
+                                    <hr>
+                                                }
+
+                                            }
+                        </div>
+                    </div>
+                    i += 1;
+                }
+
+            }
+            else
+            {
+                <div class="card-header" id="ch">
+                    <table>
+                        <tr class="row">
+                            <td class="col-md-1" style="color:black">
+                                RC
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb">No Virtual RC is added</i>
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb"><a href="/PUHome/Add/2">Click Here</a> to add Virtual RC</i>
+                            </td>
+                            <td class="col-md-2"></td>
+                            <td class="col-md-5"></td>
+                            <td class="col-md-1"></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div class="card" id="c" style="margin-bottom:5px;">
+            @if (pucs != null)
+            {
+                int i = 1;
+                foreach (var item in pucs)
+                {
+                    string idhref = "#collapsThree" + i;
+                    string id = "collapsThree" + i;
+                    <a class="collapsed card-link" style="text-decoration:none" data-toggle="collapse" href=@idhref>
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        PUC
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.rc.FirstOrDefault().VehicleNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.PUCNo
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id=@id class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle No:</td>
+                                    <td class="col-md-3"><b>@item.rc.FirstOrDefault().VehicleNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3" rowspan="4">
+                                        <div style="background-color:gray;border-radius:5px;justify-content:center;color:white;font-size:x-large">
+                                            @item.rc.First().VehicleNo
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Serial No.:</td>
+                                    <td class="col-md-3"><b>@item.PUCNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">CO Emmition:</td>
+                                    <td class="col-md-3"><b>@item.CO %</b></td>
+                                    <td class="col-md-3" id="lb">HC Emmition:</td>
+                                    <td class="col-md-3"><b>@item.HC ppm</b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Issue Date:</td>
+                                    <td class="col-md-3"><b>@item.IssueDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Expiry Date:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                   
+                                    <td>
+                                        <div class="RMV">@Html.ActionLink("Remove", "Remove", new { id = 3, number = item.PUCNo })</div>
+                                    </td>
+                                    <td>
+                                        <div class="AddV"><a href="/PUHome/Add/3">  Add Onther Virtual DL</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    i += 1;
+                }
+
+            }
+            else
+            {
+                <div class="card-header" id="ch">
+                    <table>
+                        <tr class="row">
+                            <td class="col-md-1" style="color:black">
+                                PUC
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb">No Virtual PUC is added </i>
+                            </td>
+                            <td class="col-md-3">
+                                <i id="lb"><a href="/PUHome/Add/3">Click Here</a> to add Virtual PUC</i>
+                            </td>
+                            <td class="col-md-2" style="color:green"></td>
+                            <td class="col-md-5"></td>
+                            <td class="col-md-1"></td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

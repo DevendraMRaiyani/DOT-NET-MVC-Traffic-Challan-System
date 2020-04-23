@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PoliceAdmin.Models.RULES>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Rule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fine)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fine)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RuleId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RuleId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RuleId })
+        </td>
+    </tr>
+}
+
+</table>

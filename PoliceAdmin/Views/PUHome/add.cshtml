@@ -1,0 +1,416 @@
+﻿@using PoliceAdmin.Models
+@{
+    PublicUser pu = ViewBag.pu;
+
+    ICollection<DL> dls = ViewBag.dls;
+
+    ICollection<RC> rcs = ViewBag.rcs;
+
+    ICollection<PUC> pucs = ViewBag.pucs;
+    var id = ViewBag.id;
+
+    string DOC = ViewBag.Document;
+
+    ViewBag.title = "Add";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("E-Parivahan", "Index", "PUHome", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Home", "Index", "PUHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    
+                    <li style="float:right">@Html.ActionLink("Log Out", "Logout", "PULogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style>
+    #ch {
+        border-left: 6px solid #33bbff;
+        background-color: #e6f7ff;
+        padding: 12px;
+        border-radius: 5px;
+    }
+
+    #c {
+        border-radius: 5px;
+        border: 1px solid gray;
+    }
+
+    #lb {
+        color: gray;
+        font-size: 14px;
+    }
+</style>
+<h2>Welcome,@pu.UserName</h2>
+<br />
+
+<div class="container">
+    <p style="font-size : 20px">
+        Add Virtual
+        @if (id == 1)
+        {
+            <span>DL,</span>
+        }
+        else if (id == 2)
+        {
+            <span>RC,</span>
+        }
+        else if (id == 3)
+        {
+            <span>PUC,</span>
+        }
+    </p>
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <table>
+                <tr class="row">
+                    <td class="col-md-3">
+                        Enter
+                        @if (id == 1)
+                        {
+                            <span>Driving Licence No.: </span>
+                        }
+                        else if (id == 2)
+                        {
+                            <span>Vehicle Registration No.:</span>
+                        }
+                        else if (id == 3)
+                        {
+                            <span>Serial No.:</span>
+                        }
+                    </td>
+                    <td class="col-md-3">
+                        <input type="hidden" name="id" value="@id" required />
+                        @if (id == 1)
+                        {
+                            <input class="form-control" type="text" name="number" placeholder="e.g.: DL02 20190023456" required />
+                        }
+                        else if (id == 2)
+                        {
+                            <input class="form-control" type="text" name="number" placeholder="e.g.: DL-02-AB-0001" required />
+                        }
+                        else if (id == 3)
+                        {
+                            <input class="form-control" type="text" name="number" placeholder="e.g.: 91022019" required />
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
+    <hr>
+    @if (DOC.Equals("RC") && DOC.Equals("PUC") && DOC.Equals("DL") )
+    {
+        <div style="margin-top:50px;margin-bottom:30px;">
+            <center>
+                <i class="fa fa-file-o" style="font-size:30px"></i>
+                <br>
+                <i>search document number</i>
+            </center>
+        </div>
+    }
+    else
+    {
+        <p style="font-size : 20px">Search Result,</p>
+        if (DOC.Equals("DL"))
+        {
+            foreach (var item in dls)
+            {
+                <div id="c">
+                    <a class="card-link" style="text-decoration:none" data-toggle="collapse" href="#collapseOne">
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        DL
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.LicenceNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.OwnerName
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">DL Holder Name:</td>
+                                    <td class="col-md-3"><b>@item.OwnerName</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3" rowspan="4">
+                                        <div style="width:100px;height:100px;background-color:gray;border-radius:5px">
+                                            @if (item != null)
+                                            {<img src="~/Content/DrivingLicence/@item.profilepic" height="100px" width="100px" />}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Licence No.:</td>
+                                    <td class="col-md-3"><b>@item.LicenceNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle Class:</td>
+                                    <td class="col-md-3"><b>@item.Vehicletype </b></td>
+                                    <td class="col-md-3" id="lb">RTO office:</td>
+                                    <td class="col-md-3"><b>@item.RTO</b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Issue Date:</td>
+                                    <td class="col-md-3"><b>@item.IssueDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Expiry Date:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                    <td>
+                                        @using (Html.BeginForm("AddVD", "PUHome"))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@id" required />
+                                            <input type="hidden" name="number" value="@item.LicenceNo" required />
+                                            <button class="btn btn-success">Add as Virtual DL</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+
+       else if (DOC.Equals("RC"))
+        {
+            foreach (var item in rcs)
+            {
+                <div id="c">
+                    <a class="collapsed card-link" style="text-decoration:none" data-toggle="collapse" href="#collapseTwo">
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        RC
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.VehicleNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.OwnerName
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Owner Name:</td>
+                                    <td class="col-md-3"><b>@item.OwnerName</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Reg. No.:</td>
+                                    <td class="col-md-3"><b>@item.VehicleNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle Class:</td>
+                                    <td class="col-md-3"><b>@item.Vehicletype</b></td>
+                                    <td class="col-md-3" id="lb">Vehicle Details:</td>
+                                    <td class="col-md-3"><b>@item.VehicleDescription </b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Reg. Date:</td>
+                                    <td class="col-md-3"><b>@item.RegDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Reg. Validity:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                    <td>
+                                        @using (Html.BeginForm("AddVD", "PUHome"))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@id" required />
+                                            <input type="hidden" name="number" value="@item.VehicleNo" required />
+                                                    <button class="btn btn-success">Add as Virtual RC</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+
+       else if (DOC.Equals("PUC"))
+        {
+            foreach (var item in pucs)
+            {
+                <div id="c">
+                    <a class="collapsed card-link" style="text-decoration:none" data-toggle="collapse" href="#collapseThree">
+                        <div class="card-header" id="ch">
+                            <table>
+                                <tr class="row">
+                                    <td class="col-md-1" style="color:black">
+                                        PUC
+                                    </td>
+                                    <td class="col-md-2">
+                                        @item.PUCNo
+                                    </td>
+                                    <td class="col-md-3">
+                                        @item.rc.FirstOrDefault().VehicleNo
+                                    </td>
+                                    @if (item.ExpiryDate >= DateTime.Now)
+                                    {
+                                        <td class="col-md-2" style="color:green">
+                                            <b>Active</b>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="col-md-2" style="color:red">
+                                            <b>Expired</b>
+                                        </td>
+                                    }
+                                    <td class="col-md-5">
+                                        <span style="color:black">Valid Upto:</span> @item.ExpiryDate.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                    <div id="collapseThree" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <table style="margin:30px;margin-left:60px;line-height:2">
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Vehicle No:</td>
+                                    <td class="col-md-3"><b>@item.rc.FirstOrDefault().VehicleNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3" rowspan="4">
+                                        <div style="width:152px;height:52px;background-color:gray;border-radius:5px;justify-content:center">
+                                           
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Serial No.:</td>
+                                    <td class="col-md-3"><b>@item.PUCNo</b></td>
+                                    <td class="col-md-3"></td>
+                                    <td class="col-md-3"></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">CO Emmition:</td>
+                                    <td class="col-md-3"><b>@item.CO %</b></td>
+                                    <td class="col-md-3" id="lb">HC Emmition:</td>
+                                    <td class="col-md-3"><b>@item.HC ppm</b></td>
+                                </tr>
+                                <tr class="row">
+                                    <td class="col-md-3" id="lb">Issue Date:</td>
+                                    <td class="col-md-3"><b>@item.IssueDate.ToString("dd/MM/yyyy")</b></td>
+                                    <td class="col-md-3" id="lb">Expiry Date:</td>
+                                    <td class="col-md-3"><b>@item.ExpiryDate.ToString("dd/MM/yyyy")</b></td>
+                                </tr>
+                            </table>
+                            <table style="margin-top:-25px;margin-bottom:20px;margin-left:320px">
+                                <tr>
+                                    <td>
+                                        @using (Html.BeginForm("AddVD", "PUHome"))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@id" required />
+                                            <input type="hidden" name="number" value="@item.PUCNo" required />
+                                                <button class="btn btn-success" type="submit">Add as Virtual PUC</button>
+                                        }
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        }
+        else
+        {
+            <center>
+                <i class="fa fa-file-o" style="font-size:30px"></i>
+                <br>
+                <i>search document number</i>
+            </center>
+        }
+    }
+</div>

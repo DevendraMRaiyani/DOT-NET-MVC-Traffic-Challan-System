@@ -1,0 +1,102 @@
+﻿@model IEnumerable<PoliceAdmin.Models.TraficPolice>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Index</h2>
+
+<p>
+    Total TrafficPolice=@ViewBag.totalTP<br />
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" }) &nbsp; &nbsp;
+    @Html.ActionLink("Search By State", "Search", null, new { @class = "btn btn-default" })<br />
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TP_ID)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.is_Admin )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.image_url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tp_fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tp_lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tp_email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tp_posting)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <th>
+            @Html.DisplayFor(model => item.TP_ID)
+        </th>
+            
+        <td>
+            @Html.DisplayFor(modelItem=>item.is_Admin )
+        </td>
+        <td>
+           
+                <img src="~/Content/PolicememberProfilePhoto/@item.image_url" width="100px" height="100px" />
+            
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.tp_fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tp_lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tp_email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tp_posting)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TP_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TP_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TP_ID })
+        </td>
+    </tr>
+}
+
+</table>

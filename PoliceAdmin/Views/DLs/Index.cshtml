@@ -1,0 +1,225 @@
+﻿@model IEnumerable<PoliceAdmin.Models.DL>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+<h2>Driving Licence</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+       
+        margin: 15pxpx;
+        display:inline-block;
+        text-align: center;
+        font-family: arial;
+        padding:15px;
+    }
+
+    .title {
+        color: grey;
+        font-size: 18px;
+    }
+
+    button {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        color: black;
+        background-color: black;
+        
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+    }
+
+   
+    img{
+        max-width:300px;
+        max-height:300px;
+    }
+        button:hover, a:hover {
+            opacity: 0.7;
+        }
+    p{
+        margin:15px;
+       
+    }
+    .link > a{
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+
+        background-color: black;
+        
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+        color:white;
+    }
+</style>
+<p>
+    <p style="font-size: x-large;">Total DL issued:@ViewBag.totalDL<br />   </p>
+    @Html.ActionLink("Create New", "Create",null,new { @class="btn btn-default"}) &nbsp;&nbsp;
+    @Html.ActionLink("Search By RTO", "DLs", null, new { @class = "btn btn-default" }) &nbsp;&nbsp;
+    @Html.ActionLink("Search By category ", "DLs",null, new { @class = "btn btn-default" })
+</p>
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="card col-sm-6">
+            <div class="col-sm-4 " style="float:left">
+                <img src="~/Content/DrivingLicence/@item.profilepic" alt="John" height="150px" width="150px">
+            </div>
+            <div class="col-sm-8" style="float:left ;text-align:justify">
+                <h1>@Html.DisplayFor(modelItem => item.LicenceNo)</h1>
+                <p class="title">@Html.DisplayFor(modelItem => item.OwnerName)</p>
+
+                @{
+            if (DateTime.Compare(DateTime.Now, item.IssueDate) > 0 && DateTime.Compare(DateTime.Now, item.ExpiryDate) < 0)
+            {
+        <p style="color:green;font-weight: bold;font-size: 20px;">Active</p>
+            }
+            else
+            {
+        <p style="color:red;font-weight: bold;font-size: 20px;">Not Active</p>
+            }
+                }
+
+
+                <p class="title">
+                    @Html.DisplayNameFor(model => model.IssueDate)   -@Html.DisplayFor(modelItem => item.IssueDate)
+                </p>
+                <p class="title">
+                    @Html.DisplayNameFor(model => model.ExpiryDate)   -@Html.DisplayFor(modelItem => item.ExpiryDate)
+                </p>
+                <p class="title">
+                    @Html.DisplayNameFor(model => model.Vehicletype)   -@Html.DisplayFor(modelItem => item.Vehicletype)
+                </p>
+
+                <!---
+                    <div style="margin: 24px 0;">
+                        <i class="fas fa-car"></i>
+                        <i class="material-icons">traffic</i>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-linkedin"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                    </div>
+                -->
+            </div>
+            <p class="link">@Html.ActionLink("Details", "Details", new { id = item.LicenceNo })</p>
+        </div>
+                    }
+</div>
+<!--table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model=>model.LicenceNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.profilepic)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IssueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vehicletype)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RTO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerAddress)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <th>
+            @Html.DisplayFor(modelItem => item.LicenceNo)
+        </th>
+        <td>
+            <img src="~/Content/DrivingLicence/@item.profilepic" width="100px" height="100px" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IssueDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpiryDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vehicletype)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VehicleDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RTO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerAddress)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LicenceNo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LicenceNo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LicenceNo })
+        </td>
+    </tr>
+}
+
+</table--->

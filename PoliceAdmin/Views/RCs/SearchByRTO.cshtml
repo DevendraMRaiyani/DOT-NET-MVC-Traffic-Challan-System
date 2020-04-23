@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "SearchByRTO";
+}
+
+<h2>SearchByRTO</h2>
+@model IEnumerable<PoliceAdmin.Models.RC>
+
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                    <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                    <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                    <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                    <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                    <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        margin: 15pxpx;
+        display: inline-block;
+        text-align: center;
+        font-family: arial;
+        padding: 15px;
+    }
+
+    .title {
+        color: grey;
+        font-size: 18px;
+    }
+
+    button {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        color: black;
+        background-color: black;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+    }
+
+   
+
+    img {
+        max-width: 300px;
+        max-height: 300px;
+    }
+
+    button:hover, a:hover {
+        opacity: 0.7;
+    }
+
+    p {
+        margin: 15px;
+    }
+
+    .link > a {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        background-color: black;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+        color: white;
+    }
+</style>
+
+@using (Html.BeginForm(null, null, FormMethod.Post))
+{
+    if (ViewBag.RTO != null)
+    {
+
+        <div class="col-md-10">
+            @{
+                ViewBag.state = ViewBag.State;
+            }
+            <h3>Select the RTO:</h3>
+            @Html.DropDownList("RTO", null, htmlAttributes: new { @class = "form-control" })<br />
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+                    }
+                }
+</div>
+<div class="container">
+    <h4>RC List</h4>
+    <hr />
+   
+
+        @if (Model == null)
+            {
+            <h1>No data found</h1>
+        }
+        else
+        {
+
+            <p>TOtal item Found :   @Model.Count()</p>
+           
+                foreach (var item in Model)
+                {
+                <div class="card col-sm-5">
+
+                    <div class="col-sm-8" style="float:left ;text-align:justify">
+                        <h1>@Html.DisplayFor(modelItem => item.VehicleNo)</h1>
+                        <p class="title">@Html.DisplayFor(modelItem => item.OwnerName)</p>
+
+                        @{
+                        if (DateTime.Compare(DateTime.Now, item.RegDate) > 0 && DateTime.Compare(DateTime.Now, item.ExpiryDate) < 0)
+                        {
+                    <p style="color:green;font-weight: bold;font-size: 20px;">Active</p>
+                        }
+                        else
+                        {
+                    <p style="color:red;font-weight: bold;font-size: 20px;">Not Active</p>
+                        }
+                        }
+
+
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.RegDate)   -@Html.DisplayFor(modelItem => item.RegDate)
+                        </p>
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.ExpiryDate)   -@Html.DisplayFor(modelItem => item.ExpiryDate)
+                        </p>
+                        <p class="title">
+                            @Html.DisplayNameFor(model => model.Vehicletype)   -@Html.DisplayFor(modelItem => item.Vehicletype)
+                        </p>
+
+                        <!---
+                            <div style="margin: 24px 0;">
+                                <i class="fas fa-car"></i>
+                                <i class="material-icons">traffic</i>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </div>
+                        -->
+                    </div>
+                    <p class="link">@Html.ActionLink("Details", "Details", new { id = item.VehicleNo })</p>
+                </div>
+                }
+            
+                            }
+    
+
+</div>
+<p>
+
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

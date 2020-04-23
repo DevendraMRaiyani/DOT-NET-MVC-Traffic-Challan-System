@@ -1,0 +1,79 @@
+﻿
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "index";
+}
+@section nav{
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("E-parivahan", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+
+                   
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+    }
+<h2>Public User Login</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <b class="text-danger">@ViewBag.err</b>
+    <b class="text-success">@ViewBag.msg1</b>
+
+    <table>
+
+        <tr>
+            <td class="col-md-2">Email:</td>
+            <td>
+                <input class="form-control" type="email" name="email" required />
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2"><br />Password:</td>
+            <td>
+                <br />
+                <input class="form-control" type="password" name="password" required />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <br />
+                <button class="btn btn-primary" type="submit">Login</button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <br />
+                <a href="/PULogin/forgot">Forgot Password?</a>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <br />
+                New User? <a href="/PULogin/signup">Sign Up</a>
+            </td>
+        </tr>
+    </table>
+}
+

@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    bool isAdmin = ViewBag.isAdmin;
+
+}
+@{
+    if (Request.Cookies.Get("tAdmin") != null)
+    {
+
+        string t = Request.Cookies.Get("tAdmin").Value;
+        if (t == "Yes")
+        {
+            @section nav{
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+
+                                <li>@Html.ActionLink("PUC", "index", "PUCs")</li>
+                                <li>@Html.ActionLink("RC BOOK", "index", "RCs")</li>
+                                <li>@Html.ActionLink("DL", "index", "DLs")</li>
+                                <li>@Html.ActionLink("TraficPolice", "index", "Admin")</li>
+                                <li>@Html.ActionLink("Rules", "index", "RULES")</li>
+                                <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+
+    }
+    else
+    {
+        @section nav{
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Home", "Index", "TPHome", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+
+
+                            <li>@Html.ActionLink("Log Out", "Logout", "TrafficLogin")</li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+<h2>Index</h2>
+<br />
+@if (isAdmin)
+{
+     @Html.ActionLink("PUC","index","PUCs",null, new { @class = "btn btn-primary"})<br /><br />
+@Html.ActionLink("RC BOOK", "index","RCs",null, new { @class = "btn btn-primary" })<br /><br />
+    @Html.ActionLink("DL", "index","DLs",null, new { @class = "btn btn-primary" })<br /><br />
+    @Html.ActionLink("TraficPolice", "index",null, "Admin", new { @class = "btn btn-primary" })<br /><br />
+    @Html.ActionLink("Rules", "index","RULES", null,new { @class = "btn btn-primary" })<br /><br />
+
+
+
+}
+
+@Html.ActionLink("Challan On Driving Licence", "SearchDL","PUHome", new { @class = "btn btn-primary" })<br />
+<br />
+@Html.ActionLink("Challan On RC book " ,"SearchRC", "PUHome", new { @class = "btn btn-primary" })
